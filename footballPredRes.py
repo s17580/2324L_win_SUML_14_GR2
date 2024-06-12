@@ -54,6 +54,9 @@ city_encoder.fit(results['city'])
 country_encoder = LabelEncoder()
 country_encoder.fit(results['country'])
 
+# Mapa krajów do miast
+country_to_cities = results.groupby('country')['city'].unique().to_dict()
+
 # Funkcja do przewidywania wyniku
 def predict_result(home_team, away_team, neutral, tournament, city, country, date):
     if home_team == away_team:
@@ -113,6 +116,10 @@ city = st.sidebar.selectbox("Wybierz Miasto", np.append("", results['city'].uniq
 country = st.sidebar.selectbox("Wybierz Kraj", np.append("", results['country'].unique()))
 date = st.sidebar.date_input("Wybierz Datę Meczu")
 
+# Aktualizacja listy miast po zmianie kraju
+if country:
+    st.sidebar.selectbox("Wybierz Miasto", np.append("", country_to_cities.get(country, [""])))
+
 # Walidacja formularza
 if st.sidebar.button("Przewiduj"):
     if not home_team:
@@ -125,6 +132,8 @@ if st.sidebar.button("Przewiduj"):
         st.sidebar.error("Wybierz Miasto!")
     elif not country:
         st.sidebar.error("Wybierz Kraj!")
+    elif city not in country_to_cities.get(country, []):
+        st.sidebar.error(f"Wybrane miasto {city} nie znajduje się w kraju {country}!")
     else:
         st.write(f"Drużyna Gospodarzy: {home_team}")
         st.write(f"Drużyna Gości: {away_team}")

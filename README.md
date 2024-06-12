@@ -45,14 +45,14 @@ Projekt ten ma na celu stworzenie aplikacji webowej do prognozowania wyników me
     pip install -r requirements.txt
     ```
 
-## 4. Uruchomienie Aplikacji 
+## 4. Uruchomienie Aplikacji
 
 Aby uruchomić aplikację, wykonaj następującą komendę w terminalu:
 
 ```bash
 streamlit run footballPredRes.py
 
-## 5. Korzystanie z Aplikacji
+5. Korzystanie z Aplikacji
 
 Po uruchomieniu aplikacji otworzy się strona webowa w przeglądarce.
 

@@ -1,10 +1,11 @@
+import pickle
 import streamlit as st
 import pandas as pd
 import numpy as np
-import pickle
+
 from sklearn.preprocessing import LabelEncoder
 from PIL import Image
-import streamlit.components.v1 as components
+
 
 # Wczytywanie zapisanych modeli
 st.write("Uruchamiam aplikację...")
@@ -66,7 +67,6 @@ def predict_result(home_team, away_team, neutral, tournament, city, country, dat
     tournament_encoded = tournament_encoder.transform([tournament])[0]
     city_encoded = city_encoder.transform([city])[0]
     country_encoded = country_encoder.transform([country])[0]
-    
     # Zakodowanie daty jako string
     date_encoded = LabelEncoder().fit_transform([str(date)])[0]
 
@@ -83,7 +83,9 @@ def predict_result(home_team, away_team, neutral, tournament, city, country, dat
     })
 
     # Ustawienie odpowiedniej kolejności kolumn
-    expected_columns = ['date', 'home_team', 'away_team', 'home_score', 'tournament', 'city', 'country', 'neutral']
+    expected_columns = ['date', 'home_team', 'away_team',
+                        'home_score', 'tournament', 'city',
+                        'country', 'neutral']
     input_data = input_data[expected_columns]
 
     # Wyświetlenie danych wejściowych dla celów diagnostycznych
@@ -134,7 +136,9 @@ if st.sidebar.button("Przewiduj"):
         st.write(f"Kraj: {country}")
         st.write(f"Data: {date}")
 
-        win_prob, draw_prob, loss_prob = predict_result(home_team, away_team, neutral, tournament, city, country, date)
+        win_prob, draw_prob, loss_prob = (
+            predict_result(home_team, away_team, neutral,
+                           tournament, city, country, date))
 
         # Wyświetlenie wyników predykcji
         st.write(f"Prawdopodobieństwo Wygranej dla {home_team}: {win_prob*100:.2f}%")
@@ -148,13 +152,10 @@ if st.sidebar.button("Przewiduj"):
             final_result = "Ostateczny wynik: Remis"
         else:
             final_result = f"Ostateczny wynik: Wygrana dla {away_team}"
-        
         st.write(final_result)
-
         # Dodanie efektów specjalnych po wykonaniu przewidywania
         st.balloons()
         st.success(final_result)
-
         # Czyszczenie formularza
         if st.sidebar.button("Wyczyść formularz"):
             st.experimental_rerun()

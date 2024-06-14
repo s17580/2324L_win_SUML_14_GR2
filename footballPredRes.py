@@ -78,7 +78,7 @@ def predict_result(home_team, away_team, neutral, tournament, city, country, dat
         'date': [date_encoded],
         'home_team': [home_team_encoded],
         'away_team': [away_team_encoded],
-        'home_score': [0],  # Możesz dostosować zgodnie z wymaganiami modelu
+        'home_score': [1],  # Możesz dostosować zgodnie z wymaganiami modelu
         'tournament': [tournament_encoded],
         'city': [city_encoded],
         'country': [country_encoded],
@@ -112,13 +112,10 @@ home_team = st.sidebar.selectbox("Wybierz Drużynę Gospodarzy", np.append("", u
 away_team = st.sidebar.selectbox("Wybierz Drużynę Gości", np.append("", uniq_teams))
 neutral = st.sidebar.selectbox("Czy Mecz odbywa się na Neutralnym Terenie?", [True, False])
 tournament = st.sidebar.selectbox("Wybierz Turniej", np.append("", results['tournament'].unique()))
-city = st.sidebar.selectbox("Wybierz Miasto", np.append("", results['city'].unique()))
 country = st.sidebar.selectbox("Wybierz Kraj", np.append("", results['country'].unique()))
-date = st.sidebar.date_input("Wybierz Datę Meczu")
+city = st.sidebar.selectbox("Wybierz Miasto", np.append("", country_to_cities.get(country, [""])))
 
-# Aktualizacja listy miast po zmianie kraju
-if country:
-    st.sidebar.selectbox("Wybierz Miasto", np.append("", country_to_cities.get(country, [""])))
+date = st.sidebar.date_input("Wybierz Datę Meczu")
 
 # Walidacja formularza
 if st.sidebar.button("Przewiduj"):

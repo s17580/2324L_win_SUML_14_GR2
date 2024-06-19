@@ -86,3 +86,5 @@ def predict_result(home_team, away_team, neutral, tournament, city, country, dat
     return win_prob
 
 predict = predict_result(home_team, away_team, neutral, tournament, city, country, date)
+
+print(predict)
